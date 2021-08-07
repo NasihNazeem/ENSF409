@@ -17,11 +17,13 @@ public class DBManager {
 	private ArrayList<Student> currentStudents;
 	private static CourseCatalogue catalogue;
 	private static final String OFFERINGS_PATHNAME = ".\\database\\offerings.dat";
+	private String str;
 
 	public DBManager (CourseCatalogue aCatalogue) {
 		this.courseList = new ArrayList<Course>();
 		catalogue = aCatalogue;
 		currentStudents = new ArrayList<Student>();
+		this.str = "";
 	}
 
 	public ArrayList<Course> readFromDataBase() {
@@ -34,7 +36,7 @@ public class DBManager {
 		File newFile = new File(OFFERINGS_PATHNAME);
 		RandomAccessFile raFile = null;
 		Scanner scan= new Scanner(System.in);
-		System.out.println(newFile.exists());
+		//System.out.println(newFile.exists());
 		if(!newFile.exists() || !newFile.isFile()) {
 			try {
 				raFile = new RandomAccessFile(OFFERINGS_PATHNAME,"rw");
@@ -95,8 +97,9 @@ public class DBManager {
 		return courseList;
 	}
 
-	public void printAllSectionsRA() {
+	public String printAllSectionsRA() {
 		RandomAccessFile raFile;
+		
 		int sectionAmount = 0;
 		for(Course c: courseList) {
 			for (int i = 0; i < c.getSections().size(); i++) {
@@ -104,6 +107,7 @@ public class DBManager {
 			}
 		}
 		try {
+			
 			raFile = new RandomAccessFile(OFFERINGS_PATHNAME,"rw");
 			for (int i = 0; i < sectionAmount; i++) {
 				int reccordSize = 4 * Character.BYTES + 4 * Integer.BYTES + 10 * Character.BYTES;
@@ -112,17 +116,24 @@ public class DBManager {
 				for (int j = 0; j < 4; j++)
 					scanName[j] = raFile.readChar();
 				String cName = new String(scanName);
-				System.out.print("[index: " + i + "] course on file: " + cName + " " + raFile.readInt() + " Section: " + raFile.readInt() + " Capacity: " + raFile.readInt() + " Enrolment: " + raFile.readInt() + " Status: ");
+				//System.out.print("[index: " + i + "] course on file: " + cName + " " + raFile.readInt() + " Section: " + raFile.readInt() + " Capacity: " + raFile.readInt() + " Enrolment: " + raFile.readInt() + " Status: ");
+				str += "[index: " + i + "] course on file: " + cName + " " + raFile.readInt() + " Section: " + raFile.readInt() + " Capacity: " + raFile.readInt() + " Enrolment: " + raFile.readInt() + " Status: ";
 				char scanStatus[]= new char[10];
 				for (int j = 0; j < 10; j++)
 					scanStatus[j] = raFile.readChar();
 				String status = new String(scanStatus);
-				System.out.println(status);	
+				//System.out.println(status);
+				str += status + "\n";
 			}
+
+			
 			raFile.close();
+			
 		} catch(IOException e) {
 			System.out.println("error opening file");	
 		}
+
+		return str;
 	}
 
 	public ArrayList<Student> getStudents() {
