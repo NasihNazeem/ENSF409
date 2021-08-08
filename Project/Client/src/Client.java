@@ -8,7 +8,23 @@ public class Client {
     private BufferedReader socketIn;
     private BufferedReader stdIn;
     private guiClient user;
-
+    private static final String DELIMITER = "********************"
+                                          + "********************"
+                                          + "********************"
+                                          + "********************";
+    private static final String SUB_DELIM = "--------------------"
+                                          + "--------------------"
+                                          + "--------------------"
+                                          + "--------------------";
+    private static final String PROCESSING_HEADER = "                                   "
+                                                  + "PROCESSING"
+                                                  + "                                   ";
+    private static final String RESPONSE_HEADER = "                                    "
+                                                + "RESPONSE"
+                                                + "                                    ";
+    private static final String AWAITING_HEADER = "                                    "
+                                                + "AWAITING"
+                                                + "                                    ";
     
     public Client(String serverName, int port) {
         try{
@@ -33,22 +49,25 @@ public class Client {
         while(slct != 0) {
             String response = "";
             try {
-                System.out.println("In line 36: " + socketIn.ready());
-                // System.out.println(socketIn.readLine());
+                System.out.println("Checking readiness: " + socketIn.ready());
+                if (socketIn.ready()) {
+                    System.out.printf("%s\n%s\n%s\n", DELIMITER, PROCESSING_HEADER, SUB_DELIM);
+                }
                 while(socketIn.ready()) {
                     response += socketIn.readLine();
                     response += "\n";
                     System.out.println("we looping");
                 }
-                System.out.println("we NOT looping NOMO");
 
                 if (!response.isEmpty()){
-                    System.out.println("Response is: " + response);
+                    System.out.printf("%s\n%s\n%s\n", DELIMITER, RESPONSE_HEADER, SUB_DELIM);
+                    System.out.println(response);
                     slct = Integer.parseInt(stdIn.readLine());
-                    System.out.println("slct equals: " + slct);
-                    socketOut.println(slct);    
+                    System.out.println("\"" + slct + "\" will be sent to server" );
+                    socketOut.println(slct);
+                    System.out.println(SUB_DELIM);
                 } else {
-                    System.out.println("Awaiting");
+                    System.out.printf("%s\n%s\n%s\n", SUB_DELIM, AWAITING_HEADER, SUB_DELIM);
                 }
 
 

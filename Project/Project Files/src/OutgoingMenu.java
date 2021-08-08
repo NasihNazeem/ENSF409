@@ -132,7 +132,7 @@ public class OutgoingMenu {
                 //Search catalogue courses
                 nameChoice = chooseObject("What course subject are looking for?", catalogue.getSubjects());
                 courseChoice = chooseObject("Choose a course from the following to see more information", catalogue.getSubjectCourses(nameChoice));
-                catalogue.printCourseSections(courseChoice);
+                this.socketOut.println(courseChoice.getTabulatedSections());
                 this.socketOut.print("\n");
                 break;
                 

@@ -102,7 +102,7 @@ public class Menu {
                 //Search catalogue courses
                 nameChoice = chooseObject("What course subject are looking for?", catalogue.getSubjects());
                 courseChoice = chooseObject("Choose a course from the following to see more information", catalogue.getSubjectCourses(nameChoice));
-                catalogue.printCourseSections(courseChoice);
+                System.out.println(courseChoice.getTabulatedSections());
                 System.out.print("\n");
                 break;
                 

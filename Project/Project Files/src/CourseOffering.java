@@ -79,6 +79,7 @@ public class CourseOffering implements Comparable<CourseOffering> {
 								  this.getStatus());
 		return st;
 	}
+
 	public int compareTo(CourseOffering other) {
 		return this.secNum - other.getSecNum();
 	}

@@ -101,8 +101,7 @@ public class CourseCatalogue {
 		}
 	}
 
-	public void printCourseSections(Course course) {
-		System.out.printf(" %-7s | %-6s | %-7s | %-8s | %-9s | %-9s\n","Subject", "Number", "Section", "Capacity", "Enrolment", "Status");
+	public void printourseSections(Course course) {
 		System.out.println(DASHES);
 		for (int i = 0; i < course.getSections().size(); i++) {
 			System.out.printf(" %-7s | %-6s | %-7s | %-8s | %-9s | %-9s\n",

@@ -71,6 +71,21 @@ public class Course implements Comparable<Course> {
 		return st;
 	}
 
+	public String getTabulatedSections() {
+		String st = String.format(" %-7s | %-6s | %-7s | %-8s | %-9s | %-9s\n", "Subject", "Number", "Section", "Capacity", "Enrolment", "Status");
+		for (int i = 0; i < this.getSections().size(); i++) {
+			st += String.format(" %-7s | %-6s | %-7s | %-8s | %-9s | %-9s\n",
+								  this.getCourseName(),
+								  this.getCourseNum(),
+								  this.getSections().get(i).getSecNum(),
+								  this.getSections().get(i).getSecCap(),
+								  this.getSections().get(i).getSectionEnrolment(),
+								  this.getSections().get(i).getStatus());
+		}
+		return st;
+	}
+
+
 	public CourseOffering getCourseOfferingAt(int i) {
 		// TODO Auto-generated method stub
 		if (i < 0 || i >= sections.size() )
