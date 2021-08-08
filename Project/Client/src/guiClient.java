@@ -105,6 +105,10 @@ public class guiClient implements ActionListener {
             mainFrame.setVisible(true);
             browseFrame.setVisible(false);
         }
+        if(e.getActionCommand() == "ENTER")
+        {
+            
+        }
         
     }
 }

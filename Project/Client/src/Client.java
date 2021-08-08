@@ -33,7 +33,7 @@ public class Client {
 
         while(!line.contentEquals("QUIT")) {
             try {
-                System.out.println("Please log in by entering your student number: ");
+                //System.out.println("Please log in by entering your student number: ");
                 line = stdIn.readLine();
                 socketOut.println(line);
                 response = socketIn.readLine();
@@ -44,6 +44,13 @@ public class Client {
                 e.getStackTrace();
             }
         }
+        try {
+			stdIn.close();
+			socketIn.close();
+			socketOut.close();
+		}catch(IOException e) {
+			e.getStackTrace();
+		}
 
     }
 
