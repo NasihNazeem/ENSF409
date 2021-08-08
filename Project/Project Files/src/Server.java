@@ -2,12 +2,15 @@ import java.net.*;
 import java.io.*;
 
 
+
 public class Server {
 
 	private Socket aSocket;
 	private ServerSocket serverSocket;
 	private PrintWriter socketOut;
 	private BufferedReader socketIn;
+	private static DBManager manager;
+	private Student user;
 	
 
 
@@ -20,6 +23,15 @@ public class Server {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void setDBManager(DBManager dbManager) {
+		manager = dbManager;
+	}
+	
+	public void runServer() {
+		user = manager.getStudents().get(1);
+        //System.out.println(user);
 	}
 
 
@@ -36,6 +48,7 @@ public class Server {
 			myServer.socketIn = new BufferedReader (new InputStreamReader (myServer.aSocket.getInputStream()));
 			myServer.socketOut = new PrintWriter((myServer.aSocket.getOutputStream()), true);
 			CourseCatalogue cat = new CourseCatalogue();
+			myServer.runServer();
 		
 			myServer.socketIn.close();
 			myServer.socketOut.close();
