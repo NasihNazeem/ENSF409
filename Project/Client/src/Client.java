@@ -1,5 +1,4 @@
 import java.net.*;
-
 import java.io.*;
 
 public class Client {
@@ -8,8 +7,8 @@ public class Client {
     private PrintWriter socketOut;
     private BufferedReader socketIn;
     private BufferedReader stdIn;
-    private static DBManager manager;
-    private static Student user;
+    private guiClient user;
+
     
     public Client(String serverName, int port) {
         try{
@@ -25,19 +24,30 @@ public class Client {
 
 
     }
-
-    public static void setDBManager(DBManager dbManager){
-        manager = dbManager;
-    }
+    //192.168.0.119
 
 
     public void communicate() {
+        String line = "";
+        String response = "";
 
-        user = manager.getStudents().get(1);
-        //System.out.println(user);
-        new guiClient();
+        while(!line.contentEquals("QUIT")) {
+            try {
+                System.out.println("Please log in by entering your student number: ");
+                line = stdIn.readLine();
+                socketOut.println(line);
+                response = socketIn.readLine();
+                System.out.println("Response is: " + response);
+
+
+            } catch (IOException e) {
+                e.getStackTrace();
+            }
+        }
 
     }
+
+
 
     /**
      * Creates a Client object called {@code newClient} and a CourseCatalogue object called {@code cat}. We then call 
@@ -46,7 +56,6 @@ public class Client {
      */
     public static void main(String[] args) throws Exception {
         Client newClient = new Client("localhost", 9898);
-        
         newClient.communicate();
         
 

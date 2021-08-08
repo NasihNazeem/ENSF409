@@ -1,3 +1,5 @@
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -5,9 +7,10 @@ import java.awt.event.*;
 public class guiClient implements ActionListener {
     
     private Dimension buttonDimension = new Dimension(3,10);
-    private JButton browse, OK;
+    private JButton OK;
     private JFrame mainFrame, browseFrame;
-    private static DBManager db;
+    private JTextField userInput;
+
 
     public guiClient() {
         mainFrame = new JFrame();
@@ -15,7 +18,7 @@ public class guiClient implements ActionListener {
         JTextField welcomeText = new JTextField("Welcome to your course registration!");
         JTextField chooseText = new JTextField("Please choose from the following choices");
         
-        browse = new JButton("Browse Courses");
+        //browse = new JButton("Browse Courses");
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 10, 10));
@@ -26,16 +29,16 @@ public class guiClient implements ActionListener {
         chooseText.setEditable(false);
         welcomeText.setEditable(false);
 
-        browse.setSize(buttonDimension);
-        browse.setFocusable(false);
+        //browse.setSize(buttonDimension);
+        //browse.setFocusable(false);
 
 
-        browse.addActionListener(this);
+        //browse.addActionListener(this);
 
         mainPanel.add(welcomeText, BorderLayout.NORTH);
         mainPanel.add(chooseText);
 
-        mainPanel.add(browse, BorderLayout.SOUTH);
+        //mainPanel.add(browse, BorderLayout.SOUTH);
         mainPanel.setPreferredSize(new Dimension(200,100));
         mainFrame.setContentPane(mainPanel);
         mainFrame.setSize(350,200);
@@ -48,13 +51,11 @@ public class guiClient implements ActionListener {
 
     }
 
-    // public static void main(String[] args) {
-    //     new guiClient();
-    // }
+    public String getInput() {
+        return userInput.getText();
+    } 
 
-    public static void setDBManager(DBManager dbManager){
-        db = dbManager;
-    }
+    
 
     public void browseCourseOfferings() {
         
@@ -72,7 +73,7 @@ public class guiClient implements ActionListener {
 
         OK.addActionListener(this);
         browseLabel.setLabelFor(scrollPane);
-        browseArea.setText(db.printAllSectionsRA());
+        //browseArea.setText(db.printAllSectionsRA());
         browseArea.setEditable(false);
         browseFrame.setPreferredSize(new Dimension(750,500));
         browseFrame.setContentPane(browsePanel);
@@ -94,12 +95,12 @@ public class guiClient implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
-        if(e.getSource() == browse){
-            mainFrame.setVisible(false);
+        //if(e.getSource() == browse){
+        //    mainFrame.setVisible(false);
             //browseFrame.setVisible(true);
-            browseCourseOfferings();
+        //    browseCourseOfferings();
             //JOptionPane.showMessageDialog(mainFrame, "The backend has not been developed yet, please return later to view the courses.");
-        }
+        //}
         if(e.getSource() == OK) {
             mainFrame.setVisible(true);
             browseFrame.setVisible(false);
