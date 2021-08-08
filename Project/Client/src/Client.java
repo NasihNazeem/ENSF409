@@ -28,16 +28,20 @@ public class Client {
 
 
     public void communicate() {
-        String line = "";
+        int slct = -1;
         String response = "";
 
-        while(!line.contentEquals("QUIT")) {
+        while(slct != 0) {
             try {
                 //System.out.println("Please log in by entering your student number: ");
-                line = stdIn.readLine();
-                socketOut.println(line);
-                response = socketIn.readLine();
+                for (String line = socketIn.readLine(); line != "\u0004"; line = socketIn.readLine()) {
+                    System.out.println(line);
+                    System.out.println("we looping");
+                }
+                System.out.println("we NOT looping");
                 System.out.println("Response is: " + response);
+                slct = stdIn.read();
+                socketOut.println(slct);
 
 
             } catch (IOException e) {

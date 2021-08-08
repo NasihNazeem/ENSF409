@@ -90,7 +90,7 @@ public class OutgoingMenu {
         sortedChoices.sort(null);
         int i = 1;
         for (T choice: sortedChoices) {
-            System.out.println(i + " - " + choice);
+            socketOut.println(i + " - " + choice);
             i++;
         }
         int selection = getInput(choices.size());
@@ -102,9 +102,9 @@ public class OutgoingMenu {
 
         while(choice < 0 || choice > choiceNumber) {
             try {
-                socketOut.print("\nEnter your choice: ");
+                socketOut.println("\nEnter your choice: ");
+                socketOut.println("\u0004");
                 choice = socketIn.read();
-                socketOut.print("\n");
             } catch(NumberFormatException e) {
                 System.out.println("Invalid Selection. Please try again.");
             } catch (IOException e) {
