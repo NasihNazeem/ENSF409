@@ -17,6 +17,8 @@ public class DBManager {
 	private ArrayList<Student> currentStudents;
 	private static CourseCatalogue catalogue;
 	private static final String OFFERINGS_PATHNAME = ".\\database\\offerings.dat";
+	private static final String OFFERINGS_TEST = ".\\database\\testfile.dat";
+	private 
 
 	public DBManager (CourseCatalogue aCatalogue) {
 		this.courseList = new ArrayList<Course>();
@@ -124,6 +126,8 @@ public class DBManager {
 			System.out.println("error opening file");	
 		}
 	}
+
+
 
 	public ArrayList<Student> getStudents() {
 		return currentStudents;

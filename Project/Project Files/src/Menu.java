@@ -56,8 +56,8 @@ public class Menu {
         System.out.println("7 - View all sections offered");
         System.out.println("8 - View classlist for a course");
         System.out.println("9 - View entire catalogue FROM RandomAccessFile");
-        System.out.println("0 - Quit");
-    }
+        System.out.println("0 - Quit"); 
+     } // do you want to actually try to get a server-client looop going without the gui first, 
 
     private static <T extends Comparable<? super T>> T chooseObject(String prompt, List<T> choices) {
         System.out.println(prompt + "\n");

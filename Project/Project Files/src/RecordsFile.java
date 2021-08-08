@@ -9,7 +9,7 @@ import java.util.Iterator;
  */
 public class RecordsFile extends BaseRecordsFile {
     /**
-     * Hashtable which holds the in-memory index. For efficiency, the entire index 
+     * HashMap which holds the in-memory index. For efficiency, the entire index 
      * is cached in memory. The hashtable maps a key of type String to a RecordHeader.
      */
     protected HashMap<String, RecordHeader> memIndex;    
