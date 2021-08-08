@@ -104,7 +104,7 @@ public class OutgoingMenu {
         while(choice < 0 || choice > choiceNumber) {
             try {
                 socketOut.println("\nEnter your choice: ");
-                choice = socketIn.read();
+                choice = Integer.parseInt(socketIn.readLine());
                 System.out.println("choice is: " + choice);
             } catch(NumberFormatException e) {
                 System.out.println("Invalid Selection. Please try again.");

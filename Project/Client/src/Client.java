@@ -44,7 +44,7 @@ public class Client {
 
                 if (!response.isEmpty()){
                     System.out.println("Response is: " + response);
-                    slct = stdIn.read();
+                    slct = Integer.parseInt(stdIn.readLine());
                     System.out.println("slct equals: " + slct);
                     socketOut.println(slct);    
                 } else {
