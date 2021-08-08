@@ -16,8 +16,8 @@ public class Menu {
     // Initalized privately to register and remove registrations of a student in a course (In cases 2 and 3).
     private static final int MAIN_MENU_CHOICES = 9;
     private final static String DASHES = "--------------------"
-                                + "--------------------"
-                                + "--------------------";
+                                       + "--------------------"
+                                       + "--------------------";
 
 
     public static void setDBManager(DBManager dbManager){

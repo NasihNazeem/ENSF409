@@ -5,15 +5,12 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
-import java.util.Scanner;
 
 public class OutgoingMenu {
     // Exit is a boolean used to exit the program.
-    private static boolean exit;
+    private boolean exit;
     // Declares the catalogue of courses in the database.
     private static CourseCatalogue catalogue;
-    // Kb is used to take in user input Strings.
-    private static Scanner kb;
     // Establish current user
     private static Student user;
     // Stores the student name of the user.
@@ -23,99 +20,72 @@ public class OutgoingMenu {
     private final static String DASHES = "--------------------"
                                        + "--------------------"
                                        + "--------------------";
-    
+    private static final String menu = "Choose from the following choices:\n"
+                                     + "1 - Browse course catalogue\n"
+                                     + "2 - Enrol into a course\n"
+                                     + "3 - Drop a course\n"
+                                     + "4 - View current enrolled courses\n"
+                                     + "5 - View student record\n"
+                                     + "6 - View entire catalogue\n"
+                                     + "7 - View all sections offered\n"
+                                     + "8 - View classlist for a course\n"
+                                     + "9 - View entire catalogue FROM RandomAccessFile\n"
+                                     + "0 - Quit";
 
+    
+    // Networking fields
     private Socket aSocket;
 	private ServerSocket serverSocket;
 	private PrintWriter socketOut;
 	private BufferedReader socketIn;
-	public OutgoingMenu(int port) {
+	
+    public OutgoingMenu(int port, CourseCatalogue aCatalogue) {
 		try {
-			serverSocket = new ServerSocket(port);
+			this.serverSocket = new ServerSocket(port);
+            this.setAsocket();
+            this.socketIn = new BufferedReader (new InputStreamReader(this.aSocket.getInputStream()));
+            this.socketOut = new PrintWriter((this.aSocket.getOutputStream()), true);
+
             
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("IO Error occured when opening the socket");
 			e.printStackTrace();
 		}
 	}
 
-    public static void main (String [] args) throws IOException{
-		
-		try {
-		var myServer = new OutgoingMenu(9898);
-		myServer.aSocket = myServer.serverSocket.accept();
-		System.out.println("Connection accepted by server!");
-		myServer.socketIn = new BufferedReader (new InputStreamReader(myServer.aSocket.getInputStream()));
-		myServer.socketOut = new PrintWriter((myServer.aSocket.getOutputStream()), true);
-		myServer.relay();
-		
-		myServer.socketIn.close();
-		myServer.socketOut.close();
-		} catch (IOException e){
-		e.getStackTrace();
-	    }
+	public void relay(CourseCatalogue aCatalogue) {
+        catalogue = aCatalogue;
+		int slct;
+        user = chooseObject("Plese enter a number to select your name on the list.", dbmanager.getStudents());
+		while (!exit) {
+			socketOut.print(menu);
+            slct = getInput(MAIN_MENU_CHOICES);
+            performAction(slct);
+        }
+        try {
+            this.socketIn.close();
+            this.socketOut.close();
+        } catch (IOException e) {
+            System.out.println("Error! socketIn.close() did not do its thing!!");
+            e.printStackTrace();
+        }
     }
-
-	// The logic of the application:
-	public void relay() {
-		String line = null;
-
-		while (true) {
-			try {
-				line = socketIn.readLine();
-				if (line.equals("QUIT")) {
-					line = "Good Bye!";
-					socketOut.println(line);
-					break;
-				}
-				line = line.toUpperCase();
-				socketOut.println(line);
-			} catch (IOException e) {
-				e.getStackTrace();
-			}
-		}
-	}
     
     public static void setDBManager(DBManager dbManager){
         dbmanager = dbManager;
     }
 
-    public static void runMenu(CourseCatalogue aCatalogue) {
-        printHeader();
-        catalogue = aCatalogue;
-        kb = new Scanner(System.in);
-        user = chooseObject("Plese enter a number to select your name on the list.", dbmanager.getStudents());
-        while(!exit)
-        {
-            printMenu();
-            int choice = getInput(MAIN_MENU_CHOICES);
-            performAction(choice);
+    public void setAsocket() {
+        try {
+            this.aSocket = this.serverSocket.accept();
+            System.out.println("Connection accepted by server!");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private static void printHeader() {
-        System.out.println("");
-        System.out.println("+----------------------------------------------------------+");
-        System.out.println("|                   Course Registration                    |");
-        System.out.println("+----------------------------------------------------------+");
-    }
-
-    private static void printMenu(){
-        System.out.println("\nChoose from the following choices:");
-        System.out.println("1 - Browse course catalogue");
-        System.out.println("2 - Enrol into a course");
-        System.out.println("3 - Drop a course");
-        System.out.println("4 - View current enrolled courses");
-        System.out.println("5 - View student record");
-        System.out.println("6 - View entire catalogue");
-        System.out.println("7 - View all sections offered");
-        System.out.println("8 - View classlist for a course");
-        System.out.println("9 - View entire catalogue FROM RandomAccessFile");
-        System.out.println("0 - Quit");
-    }
-
-    private static <T extends Comparable<? super T>> T chooseObject(String prompt, List<T> choices) {
-        System.out.println(prompt + "\n");
+    private <T extends Comparable<? super T>> T chooseObject(String prompt, List<T> choices) {
+        socketOut.println(prompt + "\n");
         var sortedChoices = choices;
         sortedChoices.sort(null);
         int i = 1;
@@ -127,22 +97,25 @@ public class OutgoingMenu {
         return choices.get(selection - 1);
     }
 
-    private static int getInput(int choiceNumber) {
+    private int getInput(int choiceNumber) {
         int choice = -1;
 
         while(choice < 0 || choice > choiceNumber) {
             try {
-                System.out.print("\nEnter your choice: ");
-                choice = Integer.parseInt(kb.nextLine());
-                System.out.print("\n");
-            }   catch(NumberFormatException e) {
+                socketOut.print("\nEnter your choice: ");
+                choice = socketIn.read();
+                socketOut.print("\n");
+            } catch(NumberFormatException e) {
                 System.out.println("Invalid Selection. Please try again.");
+            } catch (IOException e) {
+                System.out.println("IO error happened with socketin.read()");
+                e.printStackTrace();
             }
         }
         return choice;
     }
 
-    private static void performAction(int choice) {
+    private void performAction(int choice) {
         String nameChoice;
         Course courseChoice;
         CourseOffering sectionChoice;
@@ -151,7 +124,7 @@ public class OutgoingMenu {
             case 0:
                 //Quit
                 exit = true;
-                System.out.println("Registration Application Terminated.");
+                this.socketOut.println("Registration Application Terminated.");
                 break;
 
             case 1:
@@ -159,7 +132,7 @@ public class OutgoingMenu {
                 nameChoice = chooseObject("What course subject are looking for?", catalogue.getSubjects());
                 courseChoice = chooseObject("Choose a course from the following to see more information", catalogue.getSubjectCourses(nameChoice));
                 catalogue.printCourseSections(courseChoice);
-                System.out.print("\n");
+                this.socketOut.print("\n");
                 break;
                 
             case 2:
@@ -172,24 +145,24 @@ public class OutgoingMenu {
                     studentRegistration.completeRegistration(user, sectionChoice);
                     user.addToSchedule(studentRegistration);
                     sectionChoice.addToStudentEnrollment(studentRegistration);
-                    System.out.println("You have succesfully enrolled in " 
+                    this.socketOut.println("You have succesfully enrolled in " 
                                       + courseChoice.getCourseName() + " " 
                                       + courseChoice.getCourseNum() + " - Section: " 
                                       + sectionChoice.getSecNum());
                 } else {
-                    System.out.println("You have reached the maximum amount of courses you can enroll in.");
+                    this.socketOut.println("You have reached the maximum amount of courses you can enroll in.");
                 }
                 break;
 
             case 3:
                 //Remove course from student courses
                 if (user.getScheduleSize() == 0) {
-                    System.out.println("You have no courses to drop!");
+                    this.socketOut.println("You have no courses to drop!");
                 } else {
                     sectionChoice = chooseObject("Select the course you wish drop.", user.getSchedule());
                     user.unenroll(sectionChoice);
                     sectionChoice.removeReg(user, user.getStudentRegistration(sectionChoice));
-                    System.out.println("You have succesfully dropped " 
+                    this.socketOut.println("You have succesfully dropped " 
                                       + sectionChoice.getTheCourse().getCourseName() + " " 
                                       + sectionChoice.getTheCourse().getCourseNum() + " - Section: " 
                                       + sectionChoice.getSecNum());
@@ -198,23 +171,22 @@ public class OutgoingMenu {
 
             case 4:
                 //View all courses taken by student
-                //TODO print out a message here "current courses are"
                 if (user.getScheduleSize() != 0) {
-                    System.out.println("Here is your schedule: \n");
+                    this.socketOut.println("Here is your schedule: \n");
                     user.printSchedule();
                 } else {
-                    System.out.println("You are not currently enrolled in any courses!");
+                    this.socketOut.println("You are not currently enrolled in any courses!");
                 }
                 break;
 
             case 5:
                 //View student record (user)
                 var studentRecords = user.getStudentRecords();
-                System.out.println(user + "    RECORDS\n");
-                System.out.printf(" %-7s | %-6s | %-7s | %-9s\n","Subject", "Number", "Section", "Grade");
-                System.out.println(DASHES);
+                this.socketOut.println(user + "    RECORDS\n");
+                this.socketOut.printf(" %-7s | %-6s | %-7s | %-9s\n","Subject", "Number", "Section", "Grade");
+                this.socketOut.println(DASHES);
                 for (Registration reg: studentRecords) {
-                    System.out.println(reg);
+                    this.socketOut.println(reg);
                 }
                 break;          
 
@@ -233,12 +205,12 @@ public class OutgoingMenu {
                 nameChoice = chooseObject("Choose a subject to view available options.", catalogue.getSubjects());
                 courseChoice = chooseObject("Choose a course to view available sections.", catalogue.getSubjectCourses(nameChoice));
                 sectionChoice = chooseObject("Choose a section to see its classlist.", courseChoice.getSections());
-                System.out.println("The following students are enrolled in "
+                this.socketOut.println("The following students are enrolled in "
                                   + sectionChoice.getTheCourse().getCourseName() + " " 
                                   + sectionChoice.getTheCourse().getCourseNum() + " - Section: " 
                                   + sectionChoice.getSecNum() );
                 for (Student s: sectionChoice.getClassList()) {
-                    System.out.println(s);
+                    this.socketOut.println(s);
                 }
                 break;
             case 9:
