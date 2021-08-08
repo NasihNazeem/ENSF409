@@ -29,19 +29,27 @@ public class Client {
 
     public void communicate() {
         int slct = -1;
-        String response = "";
 
         while(slct != 0) {
+            String response = "";
             try {
-                //System.out.println("Please log in by entering your student number: ");
-                for (String line = socketIn.readLine(); line != "\u0004"; line = socketIn.readLine()) {
-                    System.out.println(line);
+                System.out.println("In line 36: " + socketIn.ready());
+                // System.out.println(socketIn.readLine());
+                while(socketIn.ready()) {
+                    response += socketIn.readLine();
+                    response += "\n";
                     System.out.println("we looping");
                 }
-                System.out.println("we NOT looping");
-                System.out.println("Response is: " + response);
-                slct = stdIn.read();
-                socketOut.println(slct);
+                System.out.println("we NOT looping NOMO");
+
+                if (!response.isEmpty()){
+                    System.out.println("Response is: " + response);
+                    slct = stdIn.read();
+                    System.out.println("slct equals: " + slct);
+                    socketOut.println(slct);    
+                } else {
+                    System.out.println("Awaiting");
+                }
 
 
             } catch (IOException e) {

@@ -86,6 +86,7 @@ public class OutgoingMenu {
 
     private <T extends Comparable<? super T>> T chooseObject(String prompt, List<T> choices) {
         socketOut.println(prompt + "\n");
+        System.out.println("We got here");
         var sortedChoices = choices;
         sortedChoices.sort(null);
         int i = 1;
@@ -103,8 +104,8 @@ public class OutgoingMenu {
         while(choice < 0 || choice > choiceNumber) {
             try {
                 socketOut.println("\nEnter your choice: ");
-                socketOut.println("\u0004");
                 choice = socketIn.read();
+                System.out.println("choice is: " + choice);
             } catch(NumberFormatException e) {
                 System.out.println("Invalid Selection. Please try again.");
             } catch (IOException e) {

@@ -86,7 +86,7 @@ public class Menu {
                 System.out.print("\nEnter your choice: ");
                 choice = Integer.parseInt(kb.nextLine());
                 System.out.print("\n");
-            }   catch(NumberFormatException e) {
+            } catch(NumberFormatException e) {
                 System.out.println("Invalid Selection. Please try again.");
             }
         }
