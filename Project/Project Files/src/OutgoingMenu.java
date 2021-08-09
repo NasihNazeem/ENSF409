@@ -5,8 +5,10 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class OutgoingMenu {
+public class OutgoingMenu implements Runnable{
     // Exit is a boolean used to exit the program.
     private boolean exit;
     // Declares the catalogue of courses in the database.
@@ -40,6 +42,7 @@ public class OutgoingMenu {
 	private ServerSocket serverSocket;
 	private PrintWriter socketOut;
 	private BufferedReader socketIn;
+    private ExecutorService pool;
 	
     public OutgoingMenu(int port, CourseCatalogue aCatalogue) {
 		try {
@@ -47,6 +50,7 @@ public class OutgoingMenu {
             this.setAsocket();
             this.socketIn = new BufferedReader (new InputStreamReader(this.aSocket.getInputStream()));
             this.socketOut = new PrintWriter((this.aSocket.getOutputStream()), true);
+            pool = Executors.newFixedThreadPool(2);
 
             
 		} catch (IOException e) {
@@ -57,6 +61,7 @@ public class OutgoingMenu {
 
 	public void relay(CourseCatalogue aCatalogue) {
         catalogue = aCatalogue;
+        
 		int slct;
         user = chooseObject("Plese enter a number to select your name on the list.", dbmanager.getStudents());
 		while (!exit) {
@@ -211,6 +216,12 @@ public class OutgoingMenu {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void run() {
+        // TODO Auto-generated method stub
+        relay(catalogue);
     }
 }
 
