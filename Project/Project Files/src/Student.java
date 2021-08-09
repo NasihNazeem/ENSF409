@@ -50,7 +50,8 @@ public class Student implements Comparable<Student> {
 	}
 
 	public String getScheduleString() {
-		StringBuilder sched = new StringBuilder("");
+		StringBuilder sched = new StringBuilder("Here is your schedule: \n");
+
 		for(CourseOffering e : this.schedule) {
 			sched.append(e.getTheCourse().getCourseName() + " "
 						  + e.getTheCourse().getCourseNum() 

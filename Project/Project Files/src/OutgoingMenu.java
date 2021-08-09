@@ -175,7 +175,6 @@ public class OutgoingMenu {
             case 4:
                 //View all courses taken by student
                 if (user.getScheduleSize() != 0) {
-                    this.socketOut.println("Here is your schedule: \n");
                     socketOut.println(user.getScheduleString());
                 } else {
                     this.socketOut.println("You are not currently enrolled in any courses!");
