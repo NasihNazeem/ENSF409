@@ -45,18 +45,19 @@ public class Student implements Comparable<Student> {
 		return this.schedule.size();
 	}
 
-	public void printSchedule() {
-		//System.out.println(schedule);
-		String status;
+	public String getScheduleString() {
+		StringBuilder sched = new StringBuilder("");
 		for(CourseOffering e : this.schedule) {
+			sched.append(e.getTheCourse().getCourseName() + " "
+						  + e.getTheCourse().getCourseNum() + ", Section No: "
+						  + e.getSecNum() + ", Status: ");
 			if(e.getOfferingStatus() == true){
-				status = "Confirmed.";
-				System.out.println(e.getTheCourse().getCourseName() + " " + e.getTheCourse().getCourseNum() + ", Section No: " + e.getSecNum() + ", Status: "+ status +"\n");
+				sched.append("Confirmed\n");
 			} else {
-				status = "Tentative.";
-				System.out.println(e.getTheCourse().getCourseName() + " " + e.getTheCourse().getCourseNum() + ", Section No: " + e.getSecNum() + ", Status: "+ status +"\n");
+				sched.append("Tentative\n");
 			}
 		}
+		return sched.toString();
 	}
 
 	public String getStudentName() {

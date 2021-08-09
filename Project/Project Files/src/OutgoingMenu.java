@@ -140,7 +140,7 @@ public class OutgoingMenu {
                 
             case 2:
                 //Add course to student courses
-                if(user.getScheduleSize() < 6){
+                if(user.getScheduleSize() < 6) {
                     nameChoice = chooseObject("What's the subject of the course you want to enrol into?", catalogue.getSubjects());
                     courseChoice = chooseObject("Choose a course from the following to see available sections", catalogue.getSubjectCourses(nameChoice));
                     sectionChoice = chooseObject("Choose a section to enrol into", courseChoice.getSections());
@@ -176,7 +176,7 @@ public class OutgoingMenu {
                 //View all courses taken by student
                 if (user.getScheduleSize() != 0) {
                     this.socketOut.println("Here is your schedule: \n");
-                    user.printSchedule();
+                    socketOut.println(user.getScheduleString());
                 } else {
                     this.socketOut.println("You are not currently enrolled in any courses!");
                 }

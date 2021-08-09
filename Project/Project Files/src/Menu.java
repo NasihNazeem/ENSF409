@@ -145,7 +145,7 @@ public class Menu {
                 //TODO print out a message here "current courses are"
                 if (user.getScheduleSize() != 0) {
                     System.out.println("Here is your schedule: \n");
-                    user.printSchedule();
+                    System.out.println(user.getScheduleString());
                 } else {
                     System.out.println("You are not currently enrolled in any courses!");
                 }
