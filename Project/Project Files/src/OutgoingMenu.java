@@ -30,7 +30,8 @@ public class OutgoingMenu {
                                      + "7 - View all sections offered\n"
                                      + "8 - View classlist for a course\n"
                                      + "9 - View entire catalogue FROM RandomAccessFile\n"
-                                     + "0 - Quit";
+                                     + "0 - Quit\n\n";
+
 
     
     // Networking fields
@@ -58,7 +59,7 @@ public class OutgoingMenu {
 		int slct;
         user = chooseObject("Plese enter a number to select your name on the list.", dbmanager.getStudents());
 		while (!exit) {
-			socketOut.print(menu);
+			socketOut.println(menu);
             slct = getInput(MAIN_MENU_CHOICES);
             performAction(slct);
         }
@@ -85,15 +86,16 @@ public class OutgoingMenu {
     }
 
     private <T extends Comparable<? super T>> T chooseObject(String prompt, List<T> choices) {
-        socketOut.println(prompt + "\n");
-        System.out.println("We got here");
+        StringBuilder choiceListing = new StringBuilder(prompt + "\n");
         var sortedChoices = choices;
         sortedChoices.sort(null);
         int i = 1;
         for (T choice: sortedChoices) {
-            socketOut.println(i + " - " + choice);
+            choiceListing.append(i + " - " + choice + "\n");
             i++;
         }
+        String outgoing = choiceListing.toString();
+        socketOut.println(outgoing);
         int selection = getInput(choices.size());
         return choices.get(selection - 1);
     }
@@ -103,9 +105,9 @@ public class OutgoingMenu {
 
         while(choice < 0 || choice > choiceNumber) {
             try {
-                socketOut.println("\nEnter your choice: ");
+                socketOut.println("Enter your choice: ");
                 choice = Integer.parseInt(socketIn.readLine());
-                System.out.println("choice is: " + choice);
+                System.out.println("choice made: " + choice);
             } catch(NumberFormatException e) {
                 System.out.println("Invalid Selection. Please try again.");
             } catch (IOException e) {
@@ -133,7 +135,7 @@ public class OutgoingMenu {
                 nameChoice = chooseObject("What course subject are looking for?", catalogue.getSubjects());
                 courseChoice = chooseObject("Choose a course from the following to see more information", catalogue.getSubjectCourses(nameChoice));
                 this.socketOut.println(courseChoice.getTabulatedSections());
-                this.socketOut.print("\n");
+                this.socketOut.println("\n");
                 break;
                 
             case 2:

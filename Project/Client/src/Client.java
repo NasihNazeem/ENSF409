@@ -61,7 +61,7 @@ public class Client {
 
                 if (!response.isEmpty()){
                     System.out.printf("%s\n%s\n%s\n", DELIMITER, RESPONSE_HEADER, SUB_DELIM);
-                    System.out.println(response);
+                    System.out.print(response);
                     slct = Integer.parseInt(stdIn.readLine());
                     System.out.println("\"" + slct + "\" will be sent to server" );
                     socketOut.println(slct);
