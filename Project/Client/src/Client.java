@@ -208,16 +208,15 @@ public class Client implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
         try{
-        if(input.equals("")){
-            input = inputTextField.getText();
-            inputTextField.setText("");
-        }
-        if(Integer.parseInt(input) > 9 || Integer.parseInt(input) < 0)
-        {
-            JOptionPane.showMessageDialog(inputTextField, "Please input a number within the range of the menu.");
-            inputTextField.setText("");
-            input = "";
-        }
+            if(input.equals("")){
+                input = inputTextField.getText();
+                inputTextField.setText("");
+            }
+            if(Integer.parseInt(input) > 9 || Integer.parseInt(input) < 0) {
+                JOptionPane.showMessageDialog(inputTextField, "Please input a number within the range of the menu.");
+                inputTextField.setText("");
+                input = "";
+            }
         } catch (NumberFormatException ee) {
             ee.getSuppressed();
         }

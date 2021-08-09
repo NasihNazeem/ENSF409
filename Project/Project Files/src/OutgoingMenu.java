@@ -106,6 +106,8 @@ public class OutgoingMenu {
 
         while(choice < 0 || choice > choiceNumber) {
             try {
+                if(choice > choiceNumber && user != null)
+                    socketOut.println(menu);
                 socketOut.println("Enter your choice: ");
                 choice = Integer.parseInt(socketIn.readLine());
                 System.out.println("choice made: " + choice);
