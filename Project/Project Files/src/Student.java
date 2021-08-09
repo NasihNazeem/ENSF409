@@ -10,6 +10,10 @@ public class Student implements Comparable<Student> {
 	// A collection of Registration objects that serves as both a record of previously completed courses
 	// AND for currently enrolled courses.
 	private ArrayList<Registration> studentRegList; // Past + Current
+    private final static String DASHES = "--------------------"
+                                       + "--------------------"
+									   + "--------------------"
+                                       + "--------------------";
 	
 	
 	public Student (String studentName, int studentId) {
@@ -49,8 +53,9 @@ public class Student implements Comparable<Student> {
 		StringBuilder sched = new StringBuilder("");
 		for(CourseOffering e : this.schedule) {
 			sched.append(e.getTheCourse().getCourseName() + " "
-						  + e.getTheCourse().getCourseNum() + ", Section No: "
-						  + e.getSecNum() + ", Status: ");
+						  + e.getTheCourse().getCourseNum() 
+						  + ", Section No: " + e.getSecNum()
+						  + ", Status: ");
 			if(e.getOfferingStatus() == true){
 				sched.append("Confirmed\n");
 			} else {
@@ -77,7 +82,7 @@ public class Student implements Comparable<Student> {
 	}
 	@Override
 	public String toString () {
-		String st = String.format("%-20s ID: %s", this.getStudentName(), this.getStudentId());
+		String st = String.format("%-20s ID: %s\n", this.getStudentName(), this.getStudentId());
 		return st;
 	}
 	public int compareTo(Student other) {
@@ -88,8 +93,15 @@ public class Student implements Comparable<Student> {
 		}
 	}
 
-	public ArrayList<Registration> getStudentRecords() {
-		return this.studentRegList;
+	public String getStudentRecords() {
+		StringBuilder records = new StringBuilder("");
+		records.append(this.toString() + "    RECORDS\n\n"
+						+ " Subject | Number | Section | Grade\n"
+						+ DASHES + "\n");
+		for (Registration reg: studentRegList) {
+			records.append(reg.toString());
+		}
+		return records.toString();
 	}
 
 	public void addToRecords(Registration registration) {

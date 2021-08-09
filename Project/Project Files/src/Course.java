@@ -10,6 +10,11 @@ public class Course implements Comparable<Course> {
 	private ArrayList<Course> preReqs;
 	// ArrayList of sections for a course.
 	private ArrayList<CourseOffering> sections;
+	private final String DASHES = "--------------------"
+								+ "--------------------"
+								+ "--------------------"
+								+ "--------------------";
+
 
 	public Course(String courseName, int courseNum) {
 		this.setCourseName(courseName);
@@ -67,12 +72,12 @@ public class Course implements Comparable<Course> {
 	
 	@Override
 	public String toString () {
-		String st = getCourseName() + " " + getCourseNum() + " - Available Sections: " + sections.size() + "\n";
+		String st = getCourseName() + " " + getCourseNum() + " - Available Sections: " + sections.size() + "\n\n";
 		return st;
 	}
 
 	public String getTabulatedSections() {
-		String st = String.format(" %-7s | %-6s | %-7s | %-8s | %-9s | %-9s\n", "Subject", "Number", "Section", "Capacity", "Enrolment", "Status");
+		String st = "";
 		for (int i = 0; i < this.getSections().size(); i++) {
 			st += String.format(" %-7s | %-6s | %-7s | %-8s | %-9s | %-9s\n",
 								  this.getCourseName(),
@@ -83,6 +88,14 @@ public class Course implements Comparable<Course> {
 								  this.getSections().get(i).getStatus());
 		}
 		return st;
+	}
+
+	public String getSectionsString() {
+		StringBuilder secTab = new StringBuilder("");
+		secTab.append(String.format(" %-7s | %-6s | %-7s | %-8s | %-9s | %-9s\n", "Subject", "Number", "Section", "Capacity", "Enrolment", "Status"));
+		secTab.append(DASHES + "\n");
+		secTab.append(this.getTabulatedSections());
+		return secTab.toString();
 	}
 
 

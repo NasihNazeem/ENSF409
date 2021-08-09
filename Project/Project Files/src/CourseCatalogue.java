@@ -6,6 +6,7 @@ public class CourseCatalogue {
 	private ArrayList <Course> courseList;
 	private final String DASHES = "--------------------"
 								+ "--------------------"
+								+ "--------------------"
 								+ "--------------------";
 	public CourseCatalogue () {
 		loadFromDataBase ();
@@ -49,10 +50,10 @@ public class CourseCatalogue {
 	public ArrayList<String> getSubjects() {
 		var courseSubjectList = new ArrayList<String>();
 		for (Course c : courseList) {
-			if(courseSubjectList.contains(c.getCourseName())) {
+			if(courseSubjectList.contains(c.getCourseName() + "\n")) {
 				continue;
 			} else {
-				courseSubjectList.add(c.getCourseName());
+				courseSubjectList.add(c.getCourseName() + "\n");
 			}
 		}
 		return courseSubjectList;
@@ -61,7 +62,7 @@ public class CourseCatalogue {
 	public ArrayList<Course> getSubjectCourses(String subject) {
 		var subjectCourses = new ArrayList<Course>();
 		for (Course c: courseList) {
-			if(c.getCourseName().equals(subject)) {
+			if(c.getCourseName().equals(subject.trim())) {
 				subjectCourses.add(c);
 			} else {
 				continue;
@@ -84,51 +85,25 @@ public class CourseCatalogue {
 	}
 
 	@Override
-	public String toString () {
-		String st = "All courses in the catalogue: \n";
-		for (Course c : courseList) {
-			st += c;  //This line invokes the toString() method of Course
-			st += "\n";
+	public String toString() {
+		StringBuilder catalogue = new StringBuilder("");
+		var sortedCourseList = courseList;
+		Collections.sort(sortedCourseList);
+		for (Course aCourse: sortedCourseList) {
+			catalogue.append(aCourse.toString());
 		}
-		return st;
+		return catalogue.toString();
 	}
 
-	public void printCatalogue() {
+	public String allSectionsToString() {
+		StringBuilder sections = new StringBuilder("");
+		sections.append(" Subject | Number | Section | Capacity | Enrolment | Status\n"
+						+ DASHES + "\n");
 		var sortedCourseList = courseList;
 		Collections.sort(sortedCourseList);
 		for (Course c: sortedCourseList) {
-			System.out.println(c);
+			sections.append(c.getTabulatedSections());
 		}
-	}
-
-	public void printourseSections(Course course) {
-		System.out.println(DASHES);
-		for (int i = 0; i < course.getSections().size(); i++) {
-			System.out.printf(" %-7s | %-6s | %-7s | %-8s | %-9s | %-9s\n",
-								  course.getCourseName(),
-								  course.getCourseNum(),
-								  course.getSections().get(i).getSecNum(),
-								  course.getSections().get(i).getSecCap(),
-								  course.getSections().get(i).getSectionEnrolment(),
-								  course.getSections().get(i).getStatus());
-		}
-	}
-
-	public void printAllSections() {
-		System.out.printf(" %-7s | %-6s | %-7s | %-8s | %-9s | %-9s\n","Subject", "Number", "Section", "Capacity", "Enrolment", "Status");
-		System.out.println(DASHES);
-		var sortedCourseList = courseList;
-		Collections.sort(sortedCourseList);
-		for (Course c: sortedCourseList) {
-			for (int i = 0; i < c.getSections().size(); i++) {
-				System.out.printf(" %-7s | %-6s | %-7s | %-8s | %-9s | %-9s\n",
-								  c.getCourseName(),
-								  c.getCourseNum(),
-								  c.getSections().get(i).getSecNum(),
-								  c.getSections().get(i).getSecCap(),
-								  c.getSections().get(i).getSectionEnrolment(),
-								  c.getSections().get(i).getStatus());
-			}
-		}
+		return sections.toString();
 	}
 }

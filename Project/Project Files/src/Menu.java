@@ -17,6 +17,7 @@ public class Menu {
     private static final int MAIN_MENU_CHOICES = 9;
     private final static String DASHES = "--------------------"
                                        + "--------------------"
+                                       + "--------------------"
                                        + "--------------------";
 
 
@@ -153,37 +154,25 @@ public class Menu {
 
             case 5:
                 //View student record (user)
-                var studentRecords = user.getStudentRecords();
-                System.out.println(user + "    RECORDS\n");
-                System.out.printf(" %-7s | %-6s | %-7s | %-9s\n","Subject", "Number", "Section", "Grade");
-                System.out.println(DASHES);
-                for (Registration reg: studentRecords) {
-                    System.out.println(reg);
-                }
+                System.out.println(user.getStudentRecords());
                 break;          
 
             case 6:
                 //View all courses in catalogue
-                catalogue.printCatalogue();
+                System.out.println(catalogue);
                 break;
             
 
             case 7:
                 // View all courses in catalogue and their sections
-                catalogue.printAllSections();
+                System.out.println(catalogue.allSectionsToString());
                 break;
 
             case 8:
                 nameChoice = chooseObject("Choose a subject to view available options.", catalogue.getSubjects());
                 courseChoice = chooseObject("Choose a course to view available sections.", catalogue.getSubjectCourses(nameChoice));
                 sectionChoice = chooseObject("Choose a section to see its classlist.", courseChoice.getSections());
-                System.out.println("The following students are enrolled in "
-                                  + sectionChoice.getTheCourse().getCourseName() + " " 
-                                  + sectionChoice.getTheCourse().getCourseNum() + " - Section: " 
-                                  + sectionChoice.getSecNum() );
-                for (Student s: sectionChoice.getClassList()) {
-                    System.out.println(s);
-                }
+                System.out.println(sectionChoice.getClassList());
                 break;
             case 9:
                 dbmanager.printAllSectionsRA();

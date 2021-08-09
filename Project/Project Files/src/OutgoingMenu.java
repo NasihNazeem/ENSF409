@@ -19,6 +19,7 @@ public class OutgoingMenu {
     private static final int MAIN_MENU_CHOICES = 9;
     private final static String DASHES = "--------------------"
                                        + "--------------------"
+                                       + "--------------------"
                                        + "--------------------";
     private static final String menu = "Choose from the following choices:\n"
                                      + "1 - Browse course catalogue\n"
@@ -91,7 +92,7 @@ public class OutgoingMenu {
         sortedChoices.sort(null);
         int i = 1;
         for (T choice: sortedChoices) {
-            choiceListing.append(i + " - " + choice + "\n");
+            choiceListing.append(i + " - " + choice);
             i++;
         }
         String outgoing = choiceListing.toString();
@@ -134,8 +135,7 @@ public class OutgoingMenu {
                 //Search catalogue courses
                 nameChoice = chooseObject("What course subject are looking for?", catalogue.getSubjects());
                 courseChoice = chooseObject("Choose a course from the following to see more information", catalogue.getSubjectCourses(nameChoice));
-                this.socketOut.println(courseChoice.getTabulatedSections());
-                this.socketOut.println("\n");
+                this.socketOut.println(courseChoice.getSectionsString());
                 break;
                 
             case 2:
@@ -184,40 +184,28 @@ public class OutgoingMenu {
 
             case 5:
                 //View student record (user)
-                var studentRecords = user.getStudentRecords();
-                this.socketOut.println(user + "    RECORDS\n");
-                this.socketOut.printf(" %-7s | %-6s | %-7s | %-9s\n","Subject", "Number", "Section", "Grade");
-                this.socketOut.println(DASHES);
-                for (Registration reg: studentRecords) {
-                    this.socketOut.println(reg);
-                }
+                socketOut.println(user.getStudentRecords());
                 break;          
 
             case 6:
                 //View all courses in catalogue
-                catalogue.printCatalogue();
+                socketOut.println(catalogue.toString());
                 break;
             
 
             case 7:
                 // View all courses in catalogue and their sections
-                catalogue.printAllSections();
+                socketOut.println(catalogue.allSectionsToString());
                 break;
 
             case 8:
                 nameChoice = chooseObject("Choose a subject to view available options.", catalogue.getSubjects());
                 courseChoice = chooseObject("Choose a course to view available sections.", catalogue.getSubjectCourses(nameChoice));
                 sectionChoice = chooseObject("Choose a section to see its classlist.", courseChoice.getSections());
-                this.socketOut.println("The following students are enrolled in "
-                                  + sectionChoice.getTheCourse().getCourseName() + " " 
-                                  + sectionChoice.getTheCourse().getCourseNum() + " - Section: " 
-                                  + sectionChoice.getSecNum() );
-                for (Student s: sectionChoice.getClassList()) {
-                    this.socketOut.println(s);
-                }
+                socketOut.println(sectionChoice.getClassList());
                 break;
             case 9:
-                dbmanager.printAllSectionsRA();
+                this.socketOut.println(dbmanager.printAllSectionsRA());
                 break;
             default:
                 break;

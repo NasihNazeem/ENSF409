@@ -44,8 +44,16 @@ public class CourseOffering implements Comparable<CourseOffering> {
 		return this.currentEnrolment.size();
 	}
 
-	public ArrayList<Student> getClassList() {
-		return this.currentEnrolment;
+	public String getClassList() {
+		StringBuilder classList = new StringBuilder("");
+		classList.append("The following students are enrolled in "
+						+ this.getTheCourse().getCourseName() + " "
+						+ this.getTheCourse().getCourseNum() + " = Section: "
+						+ this.getSecNum() + "\n");
+		for (Student s: this.currentEnrolment) {
+			classList.append(s.toString());
+		}
+		return classList.toString();
 	}
 
 	public void setSecCap(int secCap) {

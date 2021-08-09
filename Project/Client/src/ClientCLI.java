@@ -1,7 +1,7 @@
 import java.net.*;
 import java.io.*;
 
-public class Client {
+public class ClientCLI {
 
     private Socket aSocket;
     private PrintWriter socketOut;
@@ -26,7 +26,7 @@ public class Client {
                                                 + "AWAITING"
                                                 + "                                    ";
     
-    public Client(String serverName, int port) {
+    public ClientCLI(String serverName, int port) {
         try{
             aSocket = new Socket(serverName, port);
 
@@ -93,9 +93,7 @@ public class Client {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        Client newClient = new Client("localhost", 9898);
+        ClientCLI newClient = new ClientCLI("localhost", 9898);
         newClient.communicate();
-        
-
     }
 }
