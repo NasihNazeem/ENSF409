@@ -60,8 +60,8 @@ public class OutgoingMenu {
 		int slct;
         user = chooseObject("Plese enter a number to select your name on the list.", dbmanager.getStudents());
 		while (!exit) {
-			socketOut.println(menu);
-            slct = getInput(MAIN_MENU_CHOICES);
+			// socketOut.println(menu);
+            slct = getInput(MAIN_MENU_CHOICES, menu);
             performAction(slct);
         }
         try {
@@ -96,18 +96,20 @@ public class OutgoingMenu {
             i++;
         }
         String outgoing = choiceListing.toString();
-        socketOut.println(outgoing);
-        int selection = getInput(choices.size());
+        int selection = getInput(choices.size(), outgoing);
         return choices.get(selection - 1);
     }
 
-    private int getInput(int choiceNumber) {
+    private int getInput(int choiceNumber, String choiceListing) {
         int choice = -1;
+        var choiceList = new StringBuilder(choiceListing + "Enter your choice: ");
+        String warning = "";
 
         while(choice < 0 || choice > choiceNumber) {
             try {
-                socketOut.println("Enter your choice: ");
+                socketOut.println(choiceList.toString() + warning);
                 choice = Integer.parseInt(socketIn.readLine());
+                warning = "\n\nPlease input a number within the range of the menu!";
                 System.out.println("choice made: " + choice);
             } catch(NumberFormatException e) {
                 System.out.println("Invalid Selection. Please try again.");
