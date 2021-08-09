@@ -229,7 +229,7 @@ public class Client implements ActionListener {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        Client newClient = new Client("192.168.0.119", 9898);
+        Client newClient = new Client("localhost", 9898);
          newClient.communicate();
     }
 }
