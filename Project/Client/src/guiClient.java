@@ -14,7 +14,7 @@ public class guiClient  {
     private JLayeredPane lp = new JLayeredPane();
     private String inputArea;
     private String input = "";
-    private JTextArea mainArea;
+    public JTextArea mainArea;
 
     public guiClient() {
         mainFrame = new JFrame();
