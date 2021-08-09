@@ -1,4 +1,5 @@
 import java.net.*;
+
 import java.io.*;
 
 public class Client {
@@ -45,6 +46,7 @@ public class Client {
 
     public void communicate() {
         int slct = -1;
+        user = new guiClient();
 
         while(slct != 0) {
             String response = "";
@@ -60,12 +62,13 @@ public class Client {
                 }
 
                 if (!response.isEmpty()){
-                    System.out.printf("%s\n%s\n%s\n", DELIMITER, RESPONSE_HEADER, SUB_DELIM);
-                    System.out.print(response);
-                    slct = Integer.parseInt(stdIn.readLine());
+                    //System.out.printf("%s\n%s\n%s\n", DELIMITER, RESPONSE_HEADER, SUB_DELIM);
+                    //System.out.print(response);
+                    user.fillArea(response);
+                    slct = Integer.parseInt(user.getInput());
                     System.out.println("\"" + slct + "\" will be sent to server" );
                     socketOut.println(slct);
-                    System.out.println(SUB_DELIM);
+                    //System.out.println(SUB_DELIM);
                 } else {
                     System.out.printf("%s\n%s\n%s\n", SUB_DELIM, AWAITING_HEADER, SUB_DELIM);
                 }

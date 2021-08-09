@@ -1,27 +1,31 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+
 
 
 
 public class guiClient  {
     
-
+    private BufferedReader stdIn;
     private JFrame mainFrame;
     private JTextField userInput;
     private JLayeredPane lp = new JLayeredPane();
     private String inputArea;
-    private String input;
     private Dimension panelDimension = new Dimension(300,200);
     private Dimension areaDimension = new Dimension(100,50);
+    private JTextArea mainArea;
 
     public guiClient() {
         mainFrame = new JFrame();
         JPanel mainPanel = new JPanel();
         JTextField welcomeText = new JTextField("Welcome! Please choose from the following choices!");
-        JTextArea mainArea = new JTextArea(1,5);
+        mainArea = new JTextArea(1,5);
         JScrollPane scrollPane = new JScrollPane(mainArea);
-        userInput = new JTextField("Input goes here.");
+        userInput = new JTextField();
+        
+
 
         lp.setLayout(new BorderLayout());
         lp.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
@@ -34,33 +38,35 @@ public class guiClient  {
         mainArea.setPreferredSize(areaDimension);
         mainArea.setMinimumSize(areaDimension);
         mainArea.setMaximumSize(areaDimension);
+        mainArea.setEditable(false);
+        
         
 
         welcomeText.setFont(new Font("Sans Serif", Font.BOLD, 20));
         welcomeText.setBorder(BorderFactory.createEmptyBorder());
         userInput.setBorder(BorderFactory.createLoweredBevelBorder());
-
         welcomeText.setHorizontalAlignment(JTextField.CENTER);
-
         welcomeText.setEditable(false);
-        
         
 
         lp.add(mainPanel);
         mainPanel.add(welcomeText, BorderLayout.NORTH);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
         mainPanel.add(userInput, BorderLayout.SOUTH);
-        
 
         /**
-         * This method call allows ENTER to be pressed when inputting in the userInput textfield.
+         * This method call allows ENTER to be pressed when 
+         * inputting in the userInput textfield.
          */
         userInput.addActionListener(new ActionListener() {
+            
             public void actionPerformed(ActionEvent e) {
                 mainFrame.setVisible(false);
                 browseMenu();
             }
+                
         });
+        
 
 
         
@@ -76,16 +82,27 @@ public class guiClient  {
         
     }
 
+    
+
     /**
-     * Return input of the textfield to Client.java to send and communicate with the Server.
-     * @return 
+     * Return input of the textfield to Client.java to send 
+     * and communicate with the Server.
+     * @return input
      */
     public String getInput() {
-        return userInput.getText();
+        String input = "";
+        while(input.equals(""))
+        {
+            
+        }
+        input = userInput.getText();
+
+        return input;
     } 
 
     /**
-     * Switching between the multiple panels (eg. Menu, Welcome Screen, Browse, etc..)
+     * Switching between the multiple panels (eg. Menu, Welcome 
+     * Screen, Browse, etc..)
      * @param panel
      */
     public void switchPanels(JPanel panel) {
@@ -101,10 +118,14 @@ public class guiClient  {
      */
     public void fillArea(String aString) {
         inputArea = aString;
+        if(inputArea != null)
+            mainArea.setText(getArea());
+
     }
 
     /**
-     * Used to populate the JTextArea with the string initialized in fillArea().
+     * Used to populate the JTextArea with the string initialized
+     * in fillArea().
      * @return
      */
     public String getArea() {
