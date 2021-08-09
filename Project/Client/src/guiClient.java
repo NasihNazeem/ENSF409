@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
+
 
 
 
@@ -10,61 +10,59 @@ public class guiClient  {
     
 
     private JFrame mainFrame;
-    private JTextField userInput;
+    private JTextField inputTextField;
     private JLayeredPane lp = new JLayeredPane();
-    private String inputArea;
+    private String inputString;
     private String input = "";
-    private JTextArea mainArea;
+    private JTextArea mainTextArea;
 
     public guiClient() {
         mainFrame = new JFrame();
         JPanel mainPanel = new JPanel();
         JTextField welcomeText = new JTextField("Welcome! Please choose from the" 
                                                     + " following choices");
-        mainArea = new JTextArea(1,2);
-        JScrollPane scrollPane = new JScrollPane(mainArea, 
-                                    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        mainTextArea = new JTextArea();
+        JScrollPane scrollPane = new JScrollPane(mainTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         
-        userInput = new JTextField();
+        inputTextField = new JTextField();
         Dimension panelDimension = new Dimension(1280,720);
-        Dimension areaDimension = new Dimension(1000,500);
-        Dimension inputDimension = new Dimension(1000,50);
-        Dimension welcomeDimension = new Dimension(1000,50);
+        Dimension textAreaDimension = new Dimension(1000,350);
+        Dimension minInputDimension = new Dimension(1000,70);
+        Dimension maxInputDimension = new Dimension(1000,150);
+        //Dimension welcomeDimension = new Dimension(1000,50);
 
-
+        
         
 
 
         lp.setLayout(new BorderLayout());
         lp.setBorder(BorderFactory.createEmptyBorder(0, 10, 20, 10));
 
-        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setLayout(new BorderLayout(0,2));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 
         lp.add(mainPanel);
-        lp.setPreferredSize(panelDimension);
-        lp.setMaximumSize(panelDimension);
-        lp.setMinimumSize(panelDimension);
-        mainArea.setPreferredSize(areaDimension);
-        mainArea.setMinimumSize(areaDimension);
-        mainArea.setMaximumSize(areaDimension);
-        mainArea.setEditable(false);
+        //lp.setPreferredSize(panelDimension);
+        //lp.setMaximumSize(panelDimension);
+        //lp.setMinimumSize(panelDimension);
+        //mainTextArea.setPreferredSize(textAreaDimension);
         
-        userInput.setPreferredSize(inputDimension);
-        userInput.setMinimumSize(inputDimension);
-        userInput.setMaximumSize(inputDimension);
-        userInput.setSize(inputDimension);
+        //mainTextArea.setMaximumSize(textAreaDimension);
+        mainTextArea.setEditable(false);
+        
+        //inputTextField.setPreferredSize(inputDimension);
+        
+        //inputTextField.setMaximumSize(maxInputDimension);
+        //inputTextField.setSize(inputDimension);
 
-        welcomeText.setPreferredSize(welcomeDimension);
+        //welcomeText.setPreferredSize(welcomeDimension);
 
         
 
         welcomeText.setFont(new Font("MONOSPACED", Font.BOLD, 20));
-        mainArea.setFont(new Font("MONOSPACED", Font.BOLD, 30));
+        mainTextArea.setFont(new Font("MONOSPACED", Font.BOLD, 20));
         welcomeText.setBorder(BorderFactory.createEmptyBorder());
-        userInput.setBorder(BorderFactory.createLoweredBevelBorder());
-        welcomeText.setLocation(640, 20);
+        inputTextField.setBorder(BorderFactory.createLoweredBevelBorder());
         welcomeText.setHorizontalAlignment(JTextField.CENTER);
         welcomeText.setEditable(false);
         
@@ -72,10 +70,9 @@ public class guiClient  {
         
         mainPanel.add(welcomeText, BorderLayout.NORTH);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
-        mainPanel.add(userInput, BorderLayout.SOUTH);
-
-
-        
+        mainPanel.add(inputTextField, BorderLayout.SOUTH);
+        mainTextArea.setMaximumSize(textAreaDimension);
+        inputTextField.setPreferredSize(minInputDimension);
 
 
         mainFrame.setLayeredPane(lp);
@@ -90,6 +87,10 @@ public class guiClient  {
 
 
         
+    }
+
+    public void exit() {
+        mainFrame.dispose();
     }
 
     
@@ -108,12 +109,12 @@ public class guiClient  {
              * inputting in the userInput textfield.
              */
         
-            userInput.addActionListener(new AbstractAction() {
+            inputTextField.addActionListener(new AbstractAction() {
 
                 public void actionPerformed(ActionEvent e) {
                     
-                    input = userInput.getText();
-                    userInput.setText("");
+                    input = inputTextField.getText();
+                    inputTextField.setText("");
                 }
                     
             });
@@ -128,9 +129,9 @@ public class guiClient  {
      * @param aString
      */
     public void fillArea(String aString) {
-        inputArea = aString;
-        if(inputArea != null)
-            mainArea.setText(getArea());
+        inputString = aString;
+        if(inputString != null)
+            mainTextArea.setText(getArea());
     }
 
     /**
@@ -139,7 +140,7 @@ public class guiClient  {
      * @return
      */
     public String getArea() {
-        return inputArea;
+        return inputString;
     }
     
 

@@ -82,6 +82,7 @@ public class Client {
             }
         }
         try {
+            user.exit();
 			stdIn.close();
 			socketIn.close();
 			socketOut.close();
