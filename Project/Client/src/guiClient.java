@@ -10,6 +10,7 @@ public class guiClient  {
     private JFrame mainFrame;
     private JTextField userInput;
     private JLayeredPane lp = new JLayeredPane();
+    private String inputArea;
     private String input;
     private Dimension panelDimension = new Dimension(300,200);
     private Dimension areaDimension = new Dimension(100,50);
@@ -75,10 +76,18 @@ public class guiClient  {
         
     }
 
+    /**
+     * Return input of the textfield to Client.java to send and communicate with the Server.
+     * @return 
+     */
     public String getInput() {
         return userInput.getText();
     } 
 
+    /**
+     * Switching between the multiple panels (eg. Menu, Welcome Screen, Browse, etc..)
+     * @param panel
+     */
     public void switchPanels(JPanel panel) {
         lp.removeAll();
         lp.add(panel);
@@ -86,8 +95,26 @@ public class guiClient  {
         lp.revalidate();
     }
 
-    
+    /**
+     * Populating the a String with the responses from Server.
+     * @param aString
+     */
+    public void fillArea(String aString) {
+        inputArea = aString;
+    }
 
+    /**
+     * Used to populate the JTextArea with the string initialized in fillArea().
+     * @return
+     */
+    public String getArea() {
+        return inputArea;
+    }
+
+    
+    /**
+     * Browse the Menu Frame.
+     */
     public void browseMenu() {
         
         JFrame browseFrame = new JFrame();
