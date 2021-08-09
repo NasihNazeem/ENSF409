@@ -107,7 +107,13 @@ public class OutgoingMenu {
 
         while(choice < 0 || choice > choiceNumber) {
             try {
+<<<<<<< HEAD
                 socketOut.println(choiceList.toString() + warning);
+=======
+                if(choice > choiceNumber && user != null)
+                    socketOut.println(menu);
+                socketOut.println("Enter your choice: ");
+>>>>>>> refs/remotes/remrepo/guiDev
                 choice = Integer.parseInt(socketIn.readLine());
                 warning = "\n\nPlease input a number within the range of the menu!";
                 System.out.println("choice made: " + choice);
