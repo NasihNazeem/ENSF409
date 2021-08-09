@@ -176,9 +176,8 @@ public class Client implements ActionListener {
         input = "";
         while(input.equals("")) {
                 inputTextField.addActionListener(this);
-            
         }
-        System.out.println(input);
+        
         
         return input;
     } 
@@ -213,8 +212,14 @@ public class Client implements ActionListener {
             input = inputTextField.getText();
             inputTextField.setText("");
         }
-        } catch (Exception ee) {
-            ee.printStackTrace();
+        if(Integer.parseInt(input) > 9 || Integer.parseInt(input) < 0)
+        {
+            JOptionPane.showMessageDialog(inputTextField, "Please input a number within the range of the menu.");
+            inputTextField.setText("");
+            input = "";
+        }
+        } catch (NumberFormatException ee) {
+            ee.getSuppressed();
         }
 
         if(e.getSource() == OK){
