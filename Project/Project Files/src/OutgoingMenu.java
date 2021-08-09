@@ -31,7 +31,7 @@ public class OutgoingMenu {
                                      + "7 - View all sections offered\n"
                                      + "8 - View classlist for a course\n"
                                      + "9 - View entire catalogue FROM RandomAccessFile\n"
-                                     + "0 - Quit\n\n";
+                                     + "0 - Quit\n";
 
 
     
@@ -102,7 +102,7 @@ public class OutgoingMenu {
 
     private int getInput(int choiceNumber, String choiceListing) {
         int choice = -1;
-        var choiceList = new StringBuilder(choiceListing + "Enter your choice: ");
+        var choiceList = new StringBuilder(choiceListing + "\nEnter your choice: ");
         String warning = "";
 
         while(choice < 0 || choice > choiceNumber) {
