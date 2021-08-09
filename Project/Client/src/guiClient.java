@@ -1,114 +1,139 @@
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class guiClient implements ActionListener {
-    
-    private Dimension buttonDimension = new Dimension(3,10);
-    private JButton OK;
-    private JFrame mainFrame, browseFrame;
-    private JTextField userInput;
 
+
+public class guiClient  {
+    
+
+    private JFrame mainFrame;
+    private JTextField userInput;
+    private JLayeredPane lp = new JLayeredPane();
+    private String input;
+    private Dimension panelDimension = new Dimension(300,200);
+    private Dimension areaDimension = new Dimension(100,50);
 
     public guiClient() {
         mainFrame = new JFrame();
         JPanel mainPanel = new JPanel();
-        JTextField welcomeText = new JTextField("Welcome to your course registration!");
-        JTextField chooseText = new JTextField("Please choose from the following choices");
-        
-        //browse = new JButton("Browse Courses");
+        JTextField welcomeText = new JTextField("Welcome! Please choose from the following choices!");
+        JTextArea mainArea = new JTextArea(1,5);
+        JScrollPane scrollPane = new JScrollPane(mainArea);
+        userInput = new JTextField("Input goes here.");
+
+        lp.setLayout(new BorderLayout());
+        lp.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 
         mainPanel.setLayout(new BorderLayout());
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        lp.setPreferredSize(panelDimension);
+        lp.setMaximumSize(panelDimension);
+        lp.setMinimumSize(panelDimension);
+        mainArea.setPreferredSize(areaDimension);
+        mainArea.setMinimumSize(areaDimension);
+        mainArea.setMaximumSize(areaDimension);
+        
+
+        welcomeText.setFont(new Font("Sans Serif", Font.BOLD, 20));
         welcomeText.setBorder(BorderFactory.createEmptyBorder());
-        chooseText.setBorder(BorderFactory.createEmptyBorder());
+        userInput.setBorder(BorderFactory.createLoweredBevelBorder());
+
         welcomeText.setHorizontalAlignment(JTextField.CENTER);
-        chooseText.setHorizontalAlignment(JTextField.CENTER);
-        chooseText.setEditable(false);
+
         welcomeText.setEditable(false);
+        
+        
 
-        //browse.setSize(buttonDimension);
-        //browse.setFocusable(false);
-
-
-        //browse.addActionListener(this);
-
+        lp.add(mainPanel);
         mainPanel.add(welcomeText, BorderLayout.NORTH);
-        mainPanel.add(chooseText);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+        mainPanel.add(userInput, BorderLayout.SOUTH);
+        
 
-        //mainPanel.add(browse, BorderLayout.SOUTH);
-        mainPanel.setPreferredSize(new Dimension(200,100));
-        mainFrame.setContentPane(mainPanel);
-        mainFrame.setSize(350,200);
-        mainFrame.setMinimumSize(new Dimension(350,200));
+        /**
+         * This method call allows ENTER to be pressed when inputting in the userInput textfield.
+         */
+        userInput.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mainFrame.setVisible(false);
+                browseMenu();
+            }
+        });
+
+
+        
+        mainFrame.setLayeredPane(lp);
+        mainFrame.setMinimumSize(new Dimension(700,350));
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setTitle("Main Window");
         mainFrame.pack();
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
 
+
+        
     }
 
     public String getInput() {
         return userInput.getText();
     } 
 
+    public void switchPanels(JPanel panel) {
+        lp.removeAll();
+        lp.add(panel);
+        lp.repaint();
+        lp.revalidate();
+    }
+
     
 
-    public void browseCourseOfferings() {
+    public void browseMenu() {
         
-        browseFrame = new JFrame();
+        JFrame browseFrame = new JFrame();
         JPanel browsePanel = new JPanel();
-        JTextArea browseArea = new JTextArea(2, 10);
-        JLabel browseLabel = new JLabel("List of Courses and Sections");
+        JTextArea browseArea = new JTextArea(1,5);
+        JTextField menuText = new JTextField("Menu");
+        // JLabel browseLabel = new JLabel("List of Courses and Sections");
         JScrollPane scrollPane = new JScrollPane(browseArea);
-        OK = new JButton("OK");
-        browsePanel.setLayout(new BorderLayout());
-        browsePanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 10, 10));
-        browseArea.setBorder(BorderFactory.createLoweredBevelBorder());
+        switchPanels(browsePanel);
+        userInput = new JTextField();
         
-        //mainFrame.remove(mainPanel);
+        
+        browsePanel.setLayout(new BorderLayout());
+        browsePanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 
-        OK.addActionListener(this);
-        browseLabel.setLabelFor(scrollPane);
-        //browseArea.setText(db.printAllSectionsRA());
+        browseArea.setBorder(BorderFactory.createLoweredBevelBorder());
+        browseArea.setPreferredSize(areaDimension);
+        browseArea.setMinimumSize(areaDimension);
+        browseArea.setMaximumSize(areaDimension);
+
+        menuText.setBorder(BorderFactory.createEmptyBorder());
+        menuText.setFont(new Font("Sans Serif", Font.BOLD, 20));
+        menuText.setHorizontalAlignment(JTextField.CENTER);
+        menuText.setEditable(false);
+
+
+
         browseArea.setEditable(false);
-        browseFrame.setPreferredSize(new Dimension(750,500));
-        browseFrame.setContentPane(browsePanel);
+        browsePanel.add(menuText, BorderLayout.NORTH);
         browsePanel.add(scrollPane, BorderLayout.CENTER);
-        browsePanel.add(OK, BorderLayout.SOUTH);
+        browsePanel.add(userInput, BorderLayout.SOUTH);
+
+        
+
+        browseFrame.setLayeredPane(lp);
+        browseFrame.setMinimumSize(new Dimension(700,350));
         browseFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        browseFrame.setTitle("Browse Window");
+        browseFrame.setTitle("Main Window");
         browseFrame.pack();
         browseFrame.setLocationRelativeTo(null);
         browseFrame.setVisible(true);
-
         
 
         
     }
 
+    
 
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        //if(e.getSource() == browse){
-        //    mainFrame.setVisible(false);
-            //browseFrame.setVisible(true);
-        //    browseCourseOfferings();
-            //JOptionPane.showMessageDialog(mainFrame, "The backend has not been developed yet, please return later to view the courses.");
-        //}
-        if(e.getSource() == OK) {
-            mainFrame.setVisible(true);
-            browseFrame.setVisible(false);
-        }
-        if(e.getActionCommand() == "ENTER")
-        {
-            
-        }
-        
     }
-}
